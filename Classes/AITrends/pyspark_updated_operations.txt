@@ -1,0 +1,210 @@
+PySpark provides a variety of operators for performing operations on DataFrames. These operators can be used for data manipulation, filtering, aggregation, and more. Here's an overview of some commonly used operators in PySpark:
+
+1.Arithmetic Operators
+These operators are used to perform arithmetic operations on DataFrame columns.
+
++ : Addition
+- : Subtraction
+* : Multiplication
+/ : Division
+% : Modulus
+Example:
+
+
+from pyspark.sql.functions import *
+# Sample data
+data = [(1, 2), (3, 4), (5, 6)]
+columns = ["A", "B"]
+df = spark.createDataFrame(data,columns)
+
+# Add a new column with the sum of columns A and B
+df = df.withColumn("Sum", col("A") + col("B"))
+df.show()
+
+2.Comparison Operators
+These operators are used to compare DataFrame columns.
+
+== : Equal to
+!= : Not equal to
+> : Greater than
+< : Less than
+>= : Greater than or equal to
+<= : Less than or equal to
+Example:
+
+
+# Filter rows where column A is greater than 2
+df_filtered = df.filter(col("A") > 2)
+df_filtered.show()
+
+3.Logical Operators
+These operators are used to perform logical operations on DataFrame columns.
+
+& : AND
+| : OR
+~ : NOT
+Example:
+
+# Filter rows where column A is greater than 2 AND column B is less than 5
+df_filtered = df.filter((col("A") > 2) & (col("B") < 5))
+df_filtered.show()
+
+4.Aggregate Functions
+These operators are used to perform aggregation operations on DataFrame columns.
+
+sum : Sum of column values
+avg : Average of column values
+min : Minimum value in column
+max : Maximum value in column
+count : Count of rows
+
+Example:
+from pyspark.sql.functions import sum, avg
+
+# Calculate the sum and average of column A
+df_agg = df.agg(sum("A").alias("SumA"), avg("A").alias("AvgA"))
+df_agg.show()
+
+
+5.String Functions
+These operators are used to perform operations on string columns.
+
+contains : Checks if the string contains a specified substring
+startswith : Checks if the string starts with a specified substring
+endswith : Checks if the string ends with a specified substring
+
+Example:
+
+# Sample data
+data = [("Alice",1), ("Bob",2), ("Catherine",3)]
+columns = ["Name","roll_no"]
+df = spark.createDataFrame(data, columns)
+
+# Filter rows where the Name column contains the letter 'a'
+df_filtered = df.filter(col("Name").contains("a"))
+df_filtered.show()
+
+6.Date and Time Functions
+These operators are used to perform operations on date and time columns.
+
+year : Extracts the year from a date column
+month : Extracts the month from a date column
+dayofmonth : Extracts the day of the month from a date column
+
+Example:
+
+from pyspark.sql.functions import year, month, dayofmonth
+
+# Sample data
+data = [("2024-07-18",1), ("2023-06-15",2), ("2022-05-20",3)]
+columns = ["Date","id"]
+df = spark.createDataFrame(data, columns)
+
+# Extract year, month, and day from the Date column
+df = df.withColumn("Year", year(col("Date")))
+df = df.withColumn("Month", month(col("Date")))
+df = df.withColumn("Day", dayofmonth(col("Date")))
+df.show()
+
+Advanced Examples of PySpark Operations
+1. Arithmetic Operations with Multiple Columns
+Let's say we want to create a new column that is the result of a more complex arithmetic expression involving multiple columns.
+
+
+# Sample data
+data = [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+columns = ["A", "B", "C"]
+df = spark.createDataFrame(data, columns)
+
+# Create a new column which is A + B * C
+df = df.withColumn("Result", col("A") + (col("B") * col("C")))
+df.show()
+
+2. Using when and otherwise for Conditional Operations
+Sometimes you need to create a new column based on conditions applied to other columns.
+
+from pyspark.sql.functions import when
+
+# Sample data
+data = [("Alice", 1), ("Bob", 2), ("Catherine", 3)]
+columns = ["Name", "ID"]
+df = spark.createDataFrame(data, columns)
+
+# Create a new column with conditional logic
+df = df.withColumn("Group", when(col("ID") == 1, "Group1")
+                              .when(col("ID") == 2, "Group2")
+                              .otherwise("Group3"))
+df.show()
+
+3. String Operations
+String functions are powerful for manipulating text data.
+
+
+# Sample data
+data = [("Alice",1), ("Bob",2), ("Catherine",3)]
+columns = ["Name","id"]
+df = spark.createDataFrame(data, columns)
+
+# Perform string operations
+df = df.withColumn("Name_Upper", upper(col("Name")))
+df = df.withColumn("Name_Length", length(col("Name")))
+df.show()
+
+4. Date and Time Operations
+Working with date and time data often requires extracting or manipulating specific parts of the date.
+
+from pyspark.sql.functions import date_format
+
+# Sample data
+data = [("2024-07-18",1), ("2023-06-15",1), ("2022-05-20",3)]
+columns = ["Date","id"]
+df = spark.createDataFrame(data, columns)
+
+# Extract year, month, and day, and format date
+df = df.withColumn("Year", year(col("Date")))
+df = df.withColumn("Month", month(col("Date")))
+df = df.withColumn("Day", dayofmonth(col("Date")))
+df = df.withColumn("Formatted_Date", date_format(col("Date"), "MM-dd-yyyy"))
+df.show()
+
+5. Aggregation with Group By
+Aggregations are often used in conjunction with group by operations.
+
+
+from pyspark.sql.functions import avg, sum
+
+# Sample data
+data = [("Alice", 50), ("Bob", 60), ("Alice", 70), ("Bob", 80)]
+columns = ["Name", "Score"]
+df = spark.createDataFrame(data, columns)
+
+# Group by Name and calculate average and total scores
+df_grouped = df.groupBy("Name").agg(
+    avg("Score").alias("Average_Score"),
+    sum("Score").alias("Total_Score")
+)
+df_grouped.show()
+
+
+#create a dataframe with nested columns
+from pyspark.sql.types import StructType,StructField,StringType,IntegerType
+data = [
+         ("John",34,("street_1","Delhi",12345)),
+         ("Mary",23,("street_2","Jaipur",45678))]
+
+schema = StructType([StructField("name",StringType(),True),StructField("age",IntegerType(),True),StructField("address",StructType([StructField("street",StringType(),True),StructField("city",StringType(),True),StructField("zip",IntegerType(),True)]),True)])
+df = spark.createDataFrame(data,schema)
+df.show(truncate=False)  
+
+
+
+
+
+
+
+
+
+
+
+
+

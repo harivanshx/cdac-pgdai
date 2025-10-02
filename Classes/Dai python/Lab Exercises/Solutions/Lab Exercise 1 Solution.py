@@ -1,0 +1,267 @@
+
+# #Lab Exercise – 1 Harivansh Bhardwaj
+
+# #Q1: Write a Python program which accept the radius of a circle from the user and compute the area.
+# #Sample Output : 
+# #r = 1.1
+# #Area = 3.8013271108436504
+# import math
+# radius_of_circle = int(input("Enter the value of radius of the circle : "))
+
+# area_of_circle = round((math.pi* pow(radius_of_circle,2)),2)
+
+# print(f"the value of area of circle with radius {radius_of_circle} is {area_of_circle}")
+
+
+
+
+
+# #Q2: Temperature of a city in Fahrenheit degrees is input through the keyboard.
+# #Write a program to convert this temperature into Centigrade degrees. 
+
+# temprature_in_fahrenheit = float(input("Enter the temprature of the city in farenheit "))
+# #°C = (°F – 32) x 5/9
+# temprature_in_centigrade = round(((temprature_in_fahrenheit - 32)* 5/9),2)
+# print(f"the temprature in degree centigrade is {temprature_in_centigrade}")
+
+
+
+
+
+
+
+# #Q3: Write a Python Program to make a simple calculator that can add, subtract, multiply and divide 
+
+
+a= int(input("Enter the number a: "))
+b= int(input("Enter the number b: "))
+
+multiplication = a*b
+subst = a-b
+add = a+b
+div = a/b
+
+print(f"The addition of the following numbers a: {a} and b:{b} is {add}")
+print(f"The substraction of the following numbers a: {a} and b:{b} is {subst}")       
+print(f"The division of the following numbers a: {a} and b:{b} is {div}")
+print(f"The multiplication of the following numbers a: {a} and b:{b} is {multiplication}")
+
+
+
+
+
+# #Q4: Write a Python Program to calculate the square root
+
+# num = float(input("Enter the number you want sqrt of: "))
+# result = round(math.sqrt(num),2)
+# print(result)
+
+
+
+
+# #Q5: Write a Python Program to Solve the quadratic equation ax**2 + bx + c = 0
+# # Coeffients a, b and c are provided by the user
+
+
+
+import math
+
+a = float(input("Enter coefficient a: "))
+b = float(input("Enter coefficient b: "))
+c = float(input("Enter coefficient c: "))
+
+
+x = (b**2) - (4*a*c)
+
+if x >= 0:
+    # Two real solutions
+    sol1 = (-b + math.sqrt(x)) / (2*a)
+    sol2 = (-b - math.sqrt(x)) / (2*a)
+    print(f"The solutions are {sol1} and {sol2}")
+else:
+    print("The equation has no real roots.")
+
+
+
+
+
+# #Q6: Write a Python Program to find the area of triangle
+# # Three sides of the triangle a, b and c are provided by the user
+
+# a = int(input("Enter a: "))
+# b = int(input("Enter b: "))
+# c = int(input("Enter c: "))
+
+# The formula is: A = √[s(s - a)(s - b)(s - c)], where A is the area and s is the semi-perimeter, calculated as s = (a + b + c) / 2
+
+s = (a + b + c) / 2
+
+area_of_triangle = math.sqrt(s * (s - a) * (s - b) * (s - c))
+
+print(f"The area of the triangle is: {area_of_triangle}")
+
+
+
+
+
+# #Q7: If a five-digit number is input through the keyboard,
+# # write a program to calculate the sum of its digits without using any loop. (Hint: Use the modulus operator ‘%’) 
+
+# digit = int(input("Enter a 5 digit number"))
+# x1 = digit%10
+# digit = digit //10
+
+# x2 = digit%10
+# digit = digit //10
+
+
+# x3 = digit%10
+# digit = digit //10
+
+
+# x4 = digit%10
+# digit = digit //10
+
+
+# x5 = digit%10
+# digit = digit //10
+
+
+# total = x1+x2+x3+x4+x5
+# print(total)
+
+
+
+
+
+
+
+# #Q8: Write a Python program to print the following string in a specific format
+
+
+# print("""Twinkle Twinkle Little Star,\n \t How i wonder what you are! \n \t \t Up above the world so high, \n \t \t Like a diamond in the sky. \n Twinkle, Twinkle, little star, \n \t How i wonder what you are""")
+
+
+
+
+
+# #Q9: Write a Python program to display your details like name, age, and address in three different lines.
+
+
+
+# name="Harivansh"
+# age= 22
+# address= "Muzaffarnagar UttarPradesh, India"
+# print(f"Name: {name} \n Age: {age} \n Address: {address}")
+
+
+
+
+
+# #Q10.Create a string containing both a single quote and  double quote
+
+# string = "This is a string in which i can write s' single quote because it is sorrounded by double quotes"
+
+
+
+
+# #Q11.Create a triple quoted string that contains single and double quotes. 
+# string2 = """This is a string in which i can write ' single quote and double quote"" because it is in the tripple quotes"""
+
+
+
+
+# #Q12.Create a character, then obtain its integer representation.
+
+# char = "a"
+# integer_rep = ord(char)
+# print(integer_rep)  
+
+
+
+# #Q13.Create a single string containing 5 copies of the string 'abc'.
+
+# single_string = "abc"*5
+# print(single_string)
+
+
+
+
+# #Q14.Use the multiplication operator to create a "line" of 50 dashes.
+# fifty_dashes = "-"*50
+# print(fifty_dashes)
+
+
+
+# #Q15.Convert a string to all upper case.
+
+# string = "harivansh bhardwaj is a good student at cdac noida"
+# print(string.upper())
+
+
+
+
+# #Q16 : Write a Python program to get a string made of the first 2 and the last 2 chars from a given a string.
+
+# string = "This is a string"
+# last2= string[-2:]
+# first2 = string[:2]
+# new_string= first2+last2
+# print(new_string)
+
+
+
+
+# # Q17: a Python program to get a string from a given string where all occurrences of its first char have been changed to '$', except the first char itself.
+# # Sample String : 'restart'
+# # Expected Result : 'resta$t'
+
+# s= input("Enter a string value: ")
+# first_char = s[0]
+# s_new = s.replace(first_char,"$")
+# s_new = first_char+s_new[1:]
+# print(s_new)
+
+
+
+
+# # Q18: Write a Python program to get a single string from two given strings, separated by a space and swap the first two characters of each string.
+# # Sample String : 'abc', 'xyz' 
+# # Expected Result : 'xyc abz'
+
+
+# stringa = 'abc'
+# stringb= 'xyz'
+# new_str1 = stringb[:2]+stringa[2:]
+# new_str2 = stringa[:2]+stringb[2:]
+
+# print(new_str1)
+# print(new_str2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Q1: Write a Python program which accept the radius of a circle from the user and compute the area.
+# Sample Output : 
+# r = 1.1
+# Area = 3.8013271108436504
+
+radius = int(input("Enter the radius of circle"))
+
+area = 3.14*radius*radius
+
+print(area)
+

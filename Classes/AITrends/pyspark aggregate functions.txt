@@ -1,0 +1,25 @@
+﻿1. approx_count_distinct() function returns the count of distinct items in a group.
+
+2. avg() function returns the average of values in the input column.
+
+3. collect_list() function returns all values from an input column with duplicates.
+
+4. collect_set() function returns all values from an input column with duplicate values eliminated.
+
+5. countDistinct() function returns the number of distinct elements in a columns
+
+count() function returns number of elements in a column.
+first() function returns the first element in a column 
+
+last() function returns the last element in a column. 
+
+max() function returns the maximum value in a column.
+
+min() function
+
+mean() function returns the average of the values in a column. Alias for Avg
+
+sum() function Returns the sum of all values in a column.
+
+sumDistinct() function returns the sum of all distinct values in a column.
+

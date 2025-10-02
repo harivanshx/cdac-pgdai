@@ -1,0 +1,31 @@
+PlayerID,Name,Age,Country,Goals,Club
+1,Lionel Messi,36,Argentina,20,Inter Miami
+2,Cristiano Ronaldo,38,Portugal,25,Al Nassr
+3,Neymar Jr,,Brazil,15,Al Hilal
+4,Kylian Mbappe,25,,30,PSG
+5,Kevin De Bruyne,32,Belgium,,Man City
+6,,29,France,18,PSG
+7,Luka Modric,38,Croatia,10,
+8,,,,,
+9,Erling Haaland,23,Norway,28,Man City
+10,Harry Kane,30,England,24,Bayern Munich
+11,Karim Benzema,36,France,,Al Ittihad
+12,Paulo Dybala,30,Argentina,12,Roma
+13,Thomas Muller,34,Germany,8,Bayern Munich
+14,Eden Hazard,33,Belgium,,Real Madrid
+15,Gerard Moreno,31,Spain,11,Villarreal
+16,Sadio Mane,32,Senegal,14,Al Nassr
+17,Mohamed Salah,32,Egypt,21,Liverpool
+18,Virgil van Dijk,33,Netherlands,5,Liverpool
+19,Pedri,21,Spain,7,Barcelona
+20,Gavi,19,Spain,,Barcelona
+21,Son Heung-min,32,South Korea,16,Tottenham
+22,Bruno Fernandes,30,Portugal,9,Man United
+23,Marcus Rashford,27,England,13,Man United
+24,Jude Bellingham,21,England,17,Real Madrid
+25,Phil Foden,24,England,15,Man City
+26,Joao Felix,26,Portugal,6,Atletico Madrid
+27,Antoine Griezmann,34,France,12,Atletico Madrid
+28,Olivier Giroud,38,France,10,AC Milan
+29,Riyad Mahrez,34,Algeria,,Al Ahli
+30,Zlatan Ibrahimovic,42,Sweden,5,

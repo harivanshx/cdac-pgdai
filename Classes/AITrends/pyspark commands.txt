@@ -1,0 +1,162 @@
+-->Create a dataframe:
+1. dataset = [("James", "Sales", 3000), 
+    ("Michael", "Sales", 4600), 
+    ("Robert", "Sales", 4100), 
+    ("Maria", "Finance", 3000), 
+    ("James", "Sales", 3000), 
+    ("Scott", "Finance", 3300), 
+    ("Jen", "Finance", 3900), 
+    ("Jeff", "Marketing", 3000), 
+    ("Kumar", "Marketing", 2000), 
+    ("Saif", "Sales", 4100) 
+  ]
+2. columns= ["employee_name", "department", "salary"]
+   df = spark.createDataFrame(data = dataset, schema = columns)
+   df.show()   //to show the contents of dataframe
+   df.count()  //to count the number of records
+   len(df.columns) //count the number of columns
+   distinctDF = df.distinct() #to show the distinct records of dataframe
+   distinctDF.show()
+   distinctDF.count()
+
+
+-->PySpark Distinct of multiple columns
+#dropDuplicates():  a function to remove the 
+duplicate records of dataframe with respect to 
+one or two columns.
+
+1.dropDisDF = df.dropDuplicates
+(["department","salary"])
+  dropDisDF.show()
+  dropDisDF.count()
+
+
+-->DataFrame sorting using orderBy() function: order the records of dataframe 
+  1. df.orderBy("department").show()
+
+
+-->Pyspark select:Select single & Multiple columns from PySpark
+
+1. df.select("employee_name").show()
+
+2. df.select("employee_name","salary").show()
+
+-->PySpark withColumn: withColumn() is a 
+transformation function of DataFrame which is 
+used to change or update the value, 
+convert the datatype of an existing DataFrame 
+column, add/create a new column.
+
+1. Change column DataType using PySpark withcolumn
+from pyspark.sql.functions import *
+
+df2 = df.withColumn("salary",col("salary").cast
+("Integer"))
+df2.printSchema()
+
+2. Update the value of an existing column
+
+df3 = df.withColumn("salary",col("salary")*100)
+df3.show()
+
+3. Create a new column from an existing
+
+df4 = df.withColumn("CopiedColumn",col("salary")*
+ 2)
+df4.show()
+
+4. Add a new column using withColumn()
+
+df5 = df.withColumn("Country", lit("USA"))
+df5.show()
+
+5.Drop a column from PySpark DataFrame
+
+df4.drop("CopiedColumn").show() 
+
+6. Rename column
+
+df.withColumnRenamed("employee_name","emp_name").printSchema()
+
+For multiple columns:
+df2 = df.withColumnRenamed("dob","DateOfBirth") 
+or
+df2 = df.withColumnRenamed("department","dept").withColumnRenamed("salary","salary_amount")
+df2.printSchema()
+
+PySpark Where Filter Function:
+
+DataFrame filter() with Column Condition
+
+df.filter(df.department == "Sales").show()
+
+For multiple conditions:
+//multiple condition
+df.filter( (df.department == "Sales") & (df.employee_name  == "James") ).show()  
+
+-->PySpark Groupby:
+
+df.groupBy("department").sum("salary").show()//  
+
+groupBy() on department column of DataFrame and then find the sum of salary for each department using sum() aggregate function.
+
+-->PySpark Join
+
+1. emp = [(1,"Smith",-1,"2018","10","M",3000), 
+    (2,"Rose",1,"2010","20","M",4000), 
+    (3,"Williams",1,"2010","10","M",1000), 
+    (4,"Jones",2,"2005","10","F",2000), 
+    (5,"Brown",2,"2010","40","",-1), 
+      (6,"Brown",2,"2010","50","",-1) 
+  ]
+  empColumns = ["emp_id","name","superior_emp_id","year_joined", "emp_dept_id","gender","salary"]
+
+empDF = spark.createDataFrame(data=emp, schema = empColumns)
+empDF.printSchema()
+empDF.show()
+
+2. dept = [("Finance",10), 
+    ("Marketing",20), 
+    ("Sales",30), 
+    ("IT",40) 
+  ]
+deptColumns = ["dept_name","dept_id"]
+deptDF = spark.createDataFrame(data=dept, schema = deptColumns)
+deptDF.printSchema()
+deptDF.show()
+
+3. empDF.join(deptDF,empDF.emp_dept_id ==deptDF.dept_id,"inner").show()
+
+
+-->Pyspark collect:collect() function is used to retrieve all the elements of the dataset 
+
+1. dept = [("Finance",10), 
+    ("Marketing",20), 
+    ("Sales",30), 
+    ("IT",40) 
+  ]
+deptColumns = ["dept_name","dept_id"]
+deptDF = spark.createDataFrame(data=dept, schema = deptColumns)
+deptDF.show()
+
+dataCollect = deptDF.collect() // deptDF.collect() retrieves all elements in a DataFrame as an array to the driver. 
+print(dataCollect)
+
+for row in dataCollect:
+    print(row['dept_name'] + "," +str(row['dept_id']))
+
+In case you want to just return certain elements of a DataFrame, you should call select() first.
+
+dataCollect = deptDF.select("dept_name").collect()
+
+select() method on an RDD/DataFrame returns a new DataFrame that holds the columns that are selected whereas collect() returns the entire data set.    
+-->Using Raw SQL
+ 
+df.createOrReplaceTempView("EMP")
+spark.sql("select employee_name,department,salary from EMP ORDER BY department asc").show()
+
+
+
+
+
+

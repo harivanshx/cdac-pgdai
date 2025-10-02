@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A* Robot Path Planning in Maze</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        select, button {
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        button {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card:nth-child(2) {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .stat-card:nth-child(3) {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .maze-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .maze {
+            display: inline-grid;
+            gap: 2px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .cell {
+            width: 35px;
+            height: 35px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cell.start {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            color: white;
+            box-shadow: 0 0 20px rgba(72, 187, 120, 0.6);
+        }
+
+        .cell.goal {
+            background: linear-gradient(45deg, #f56565, #e53e3e);
+            color: white;
+            box-shadow: 0 0 20px rgba(245, 101, 101, 0.6);
+        }
+
+        .cell.obstacle {
+            background: linear-gradient(45deg, #2d3748, #1a202c);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cell.path {
+            background: linear-gradient(45deg, #4299e1, #3182ce);
+            color: white;
+            box-shadow: 0 0 15px rgba(66, 153, 225, 0.6);
+            animation: pathGlow 1s ease-in-out;
+        }
+
+        .cell.visited {
+            background: linear-gradient(45deg, #fbd38d, #f6ad55);
+            animation: visitedPulse 0.5s ease-in-out;
+        }
+
+        .cell.empty {
+            background: white;
+        }
+
+        .cell.empty:hover {
+            background: #f7fafc;
+            transform: scale(1.05);
+        }
+
+        @keyframes pathGlow {
+            0% { box-shadow: 0 0 5px rgba(66, 153, 225, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(66, 153, 225, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(66, 153, 225, 0.6); }
+        }
+
+        @keyframes visitedPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .result {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .result.success {
+            background: linear-gradient(45deg, #c6f6d5, #9ae6b4);
+            color: #22543d;
+            border: 2px solid #48bb78;
+        }
+
+        .result.failure {
+            background: linear-gradient(45deg, #fed7d7, #feb2b2);
+            color: #742a2a;
+            border: 2px solid #f56565;
+        }
+
+        .algorithm-info {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .algorithm-info h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .algorithm-info ul {
+            list-style: none;
+            color: #4a5568;
+        }
+
+        .algorithm-info li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .algorithm-info li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #4facfe;
+            font-weight: bold;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>A* Robot Path Planning</h1>
+            <p>Find the shortest path from start (0,0) to goal (n-1,n-1) using A* with Euclidean distance heuristic</p>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="gridSize">Grid Size:</label>
+                <select id="gridSize">
+                    <option value="8">8x8</option>
+                    <option value="10" selected>10x10</option>
+                    <option value="12">12x12</option>
+                    <option value="15">15x15</option>
+                </select>
+            </div>
+            
+            <button id="newMazeBtn" class="btn-secondary">🔄 New Maze</button>
+            <button id="runBtn">▶️ Run A*</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="pathLength">0</div>
+                <div class="stat-label">Path Length</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="cellsExplored">0</div>
+                <div class="stat-label">Cells Explored</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="executionTime">0ms</div>
+                <div class="stat-label">Execution Time</div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(45deg, #48bb78, #38a169);"></div>
+                <span>Start (0,0)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(45deg, #f56565, #e53e3e);"></div>
+                <span>Goal (n-1,n-1)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(45deg, #2d3748, #1a202c);"></div>
+                <span>Obstacle</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(45deg, #4299e1, #3182ce);"></div>
+                <span>Shortest Path</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(45deg, #fbd38d, #f6ad55);"></div>
+                <span>Explored</span>
+            </div>
+        </div>
+
+        <div class="maze-container">
+            <div id="maze" class="maze"></div>
+        </div>
+
+        <div id="result" class="result" style="display: none;"></div>
+
+        <div class="algorithm-info">
+            <h3>⚡ A* Algorithm Details</h3>
+            <ul>
+                <li><strong>Heuristic:</strong> Euclidean distance √((x₂-x₁)² + (y₂-y₁)²)</li>
+                <li><strong>Cost Function:</strong> f(n) = g(n) + h(n) where g(n) is distance from start, h(n) is heuristic to goal</li>
+                <li><strong>Movement:</strong> 4-directional (up, down, left, right) with unit cost</li>
+                <li><strong>Optimality:</strong> A* guarantees the shortest path when heuristic is admissible</li>
+                <li><strong>Efficiency:</strong> Explores fewer nodes than uninformed search algorithms</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        class AStarMaze {
+            constructor() {
+                this.gridSize = 10;
+                this.maze = [];
+                this.path = [];
+                this.visitedCells = [];
+                this.isRunning = false;
+                this.foundPath = false;
+                this.stats = { pathLength: 0, cellsExplored: 0, executionTime: 0 };
+                
+                this.initializeElements();
+                this.initializeMaze();
+                this.setupEventListeners();
+            }
+
+            initializeElements() {
+                this.gridSizeSelect = document.getElementById('gridSize');
+                this.newMazeBtn = document.getElementById('newMazeBtn');
+                this.runBtn = document.getElementById('runBtn');
+                this.mazeContainer = document.getElementById('maze');
+                this.resultDiv = document.getElementById('result');
+                this.pathLengthSpan = document.getElementById('pathLength');
+                this.cellsExploredSpan = document.getElementById('cellsExplored');
+                this.executionTimeSpan = document.getElementById('executionTime');
+            }
+
+            setupEventListeners() {
+                this.gridSizeSelect.addEventListener('change', () => {
+                    this.gridSize = parseInt(this.gridSizeSelect.value);
+                    this.initializeMaze();
+                });
+
+                this.newMazeBtn.addEventListener('click', () => {
+                    this.initializeMaze();
+                });
+
+                this.runBtn.addEventListener('click', () => {
+                    this.runAStar();
+                });
+            }
+
+            initializeMaze() {
+                this.maze = Array(this.gridSize).fill().map(() => Array(this.gridSize).fill(0));
+                
+                // Add random obstacles (about 30% of cells)
+                for (let i = 0; i < this.gridSize; i++) {
+                    for (let j = 0; j < this.gridSize; j++) {
+                        if (Math.random() < 0.3 && !(i === 0 && j === 0) && !(i === this.gridSize-1 && j === this.gridSize-1)) {
+                            this.maze[i][j] = 1; // 1 represents obstacle
+                        }
+                    }
+                }
+                
+                this.path = [];
+                this.visitedCells = [];
+                this.foundPath = false;
+                this.stats = { pathLength: 0, cellsExplored: 0, executionTime: 0 };
+                this.updateStats();
+                this.renderMaze();
+                this.hideResult();
+            }
+
+            renderMaze() {
+                this.mazeContainer.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
+                this.mazeContainer.innerHTML = '';
+                
+                for (let row = 0; row < this.gridSize; row++) {
+                    for (let col = 0; col < this.gridSize; col++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        cell.id = `cell-${row}-${col}`;
+                        
+                        if (row === 0 && col === 0) {
+                            cell.classList.add('start');
+                            cell.textContent = 'S';
+                        } else if (row === this.gridSize - 1 && col === this.gridSize - 1) {
+                            cell.classList.add('goal');
+                            cell.textContent = 'G';
+                        } else if (this.maze[row][col] === 1) {
+                            cell.classList.add('obstacle');
+                        } else {
+                            cell.classList.add('empty');
+                        }
+                        
+                        this.mazeContainer.appendChild(cell);
+                    }
+                }
+            }
+
+            updateStats() {
+                this.pathLengthSpan.textContent = this.stats.pathLength;
+                this.cellsExploredSpan.textContent = this.stats.cellsExplored;
+                this.executionTimeSpan.textContent = this.stats.executionTime + 'ms';
+            }
+
+            showResult(success, message) {
+                this.resultDiv.style.display = 'block';
+                this.resultDiv.className = `result ${success ? 'success' : 'failure'}`;
+                this.resultDiv.textContent = message;
+            }
+
+            hideResult() {
+                this.resultDiv.style.display = 'none';
+            }
+
+            // Euclidean distance heuristic
+            heuristic(a, b) {
+                return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+            }
+
+            // Get valid neighbors
+            getNeighbors(node) {
+                const neighbors = [];
+                const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]; // up, down, left, right
+                
+                for (const [dx, dy] of directions) {
+                    const x = node.x + dx;
+                    const y = node.y + dy;
+                    
+                    if (x >= 0 && x < this.gridSize && y >= 0 && y < this.gridSize && this.maze[x][y] === 0) {
+                        neighbors.push({ x, y });
+                    }
+                }
+                
+                return neighbors;
+            }
+
+            // A* algorithm implementation
+            async aStar(start, goal) {
+                const startTime = performance.now();
+                const openSet = [{ ...start, f: 0, g: 0, h: this.heuristic(start, goal), parent: null }];
+                const closedSet = new Set();
+                const visited = [];
+                
+                while (openSet.length > 0) {
+                    // Find node with lowest f score
+                    let current = openSet[0];
+                    let currentIndex = 0;
+                    
+                    for (let i = 1; i < openSet.length; i++) {
+                        if (openSet[i].f < current.f) {
+                            current = openSet[i];
+                            currentIndex = i;
+                        }
+                    }
+                    
+                    // Remove current from open set
+                    openSet.splice(currentIndex, 1);
+                    closedSet.add(`${current.x},${current.y}`);
+                    visited.push({ x: current.x, y: current.y });
+                    
+                    // Update visualization
+                    this.updateCellVisual(current.x, current.y, 'visited');
+                    this.stats.cellsExplored = visited.length;
+                    this.updateStats();
+                    
+                    await new Promise(resolve => setTimeout(resolve, 50)); // Animation delay
+                    
+                    // Check if we reached the goal
+                    if (current.x === goal.x && current.y === goal.y) {
+                        // Reconstruct path
+                        const finalPath = [];
+                        let temp = current;
+                        while (temp) {
+                            finalPath.unshift({ x: temp.x, y: temp.y });
+                            temp = temp.parent;
+                        }
+                        
+                        const endTime = performance.now();
+                        this.stats = {
+                            pathLength: finalPath.length,
+                            cellsExplored: visited.length,
+                            executionTime: Math.round(endTime - startTime)
+                        };
+                        
+                        return finalPath;
+                    }
+                    
+                    // Check all neighbors
+                    const neighbors = this.getNeighbors(current);
+                    
+                    for (const neighbor of neighbors) {
+                        const neighborKey = `${neighbor.x},${neighbor.y}`;
+                        
+                        if (closedSet.has(neighborKey)) continue;
+                        
+                        const tentativeG = current.g + 1; // Distance from start to neighbor through current
+                        
+                        // Check if this neighbor is already in open set
+                        let existingNode = openSet.find(node => node.x === neighbor.x && node.y === neighbor.y);
+                        
+                        if (!existingNode) {
+                            // Add new node to open set
+                            const h = this.heuristic(neighbor, goal);
+                            openSet.push({
+                                x: neighbor.x,
+                                y: neighbor.y,
+                                g: tentativeG,
+                                h: h,
+                                f: tentativeG + h,
+                                parent: current
+                            });
+                        } else if (tentativeG < existingNode.g) {
+                            // Update existing node if we found a better path
+                            existingNode.g = tentativeG;
+                            existingNode.f = tentativeG + existingNode.h;
+                            existingNode.parent = current;
+                        }
+                    }
+                }
+                
+                // No path found
+                const endTime = performance.now();
+                this.stats = {
+                    pathLength: 0,
+                    cellsExplored: visited.length,
+                    executionTime: Math.round(endTime - startTime)
+                };
+                
+                return [];
+            }
+
+            updateCellVisual(row, col, type) {
+                const cell = document.getElementById(`cell-${row}-${col}`);
+                if (cell && !cell.classList.contains('start') && !cell.classList.contains('goal')) {
+                    cell.className = `cell ${type}`;
+                }
+            }
+
+            async drawPath(path) {
+                for (let i = 0; i < path.length; i++) {
+                    const point = path[i];
+                    this.updateCellVisual(point.x, point.y, 'path');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+            }
+
+            async runAStar() {
+                if (this.isRunning) return;
+                
+                this.isRunning = true;
+                this.runBtn.innerHTML = '<span class="loading"></span> Running...';
+                this.runBtn.disabled = true;
+                this.newMazeBtn.disabled = true;
+                this.gridSizeSelect.disabled = true;
+                
+                // Reset visualization
+                this.renderMaze();
+                this.hideResult();
+                this.stats = { pathLength: 0, cellsExplored: 0, executionTime: 0 };
+                this.updateStats();
+                
+                const start = { x: 0, y: 0 };
+                const goal = { x: this.gridSize - 1, y: this.gridSize - 1 };
+                
+                const result = await this.aStar(start, goal);
+                
+                if (result.length > 0) {
+                    this.path = result;
+                    this.foundPath = true;
+                    await this.drawPath(result);
+                    this.showResult(true, `✅ Path found! Length: ${this.stats.pathLength} steps`);
+                } else {
+                    this.foundPath = false;
+                    this.showResult(false, '❌ No path exists to the goal');
+                }
+                
+                this.updateStats();
+                
+                this.isRunning = false;
+                this.runBtn.innerHTML = '▶️ Run A*';
+                this.runBtn.disabled = false;
+                this.newMazeBtn.disabled = false;
+                this.gridSizeSelect.disabled = false;
+            }
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new AStarMaze();
+        });
+    </script>
+</body>
+</html>

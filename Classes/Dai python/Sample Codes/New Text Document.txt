@@ -1,0 +1,70 @@
+#addition of 2 n numbers
+
+a =int(input("enter num1:"))
+print(a)
+b = int(input("enter num2:"))
+print(b)
+sum = a+b
+print(sum)
+
+
+#simple calculator in python
+a =int(input("enter num1:"))
+print(a)
+b = int(input("enter num2:"))
+print(b)
+
+print("1.Add","2.Subtract","3.Product","4.Divide")
+#print("Choose any operation")
+choice =int(input("Choose any operation: "))
+ 
+if choice==1:
+    print(a+b)
+elif choice==2:
+    print(a-b)
+elif choice==3:
+    print(a*b)
+else:
+    if b==0:
+        print("invalid")
+    else:
+        print(a/b)
+
+#squareroot of any number
+import math
+a = int(input("Enter any number: "))
+print(a)
+print(math.sqrt(a))
+
+#area of triangle
+
+import math 
+a = int(input("enter first side of triangele:"))
+b = int(input("enter second side of triangele:"))
+c = int(input("enter third side of triangele:"))
+
+s = (a+b+c)/2
+
+area = int(math.sqrt(s*(s-a)*(s-b)*(s-c)))
+print(area)
+
+#integer representation of character
+
+a = input("Enter any char: ")
+integer_representation = ord(a)
+
+print(integer_representation)
+
+#Single quote and double quote
+
+str1="Hi Priya"
+print(str1)
+
+str2="'How are you?'"
+print(str2)
+
+str3='''"Im fine"'''
+print(str3)
+
+
+

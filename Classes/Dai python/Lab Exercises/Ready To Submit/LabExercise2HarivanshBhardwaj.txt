@@ -1,0 +1,193 @@
+#Lab Exercise 2 Harivansh Bhardwaj
+
+
+# # Q1: Write a Python program to sum all the items in a list.
+
+list1 = [44,66,77,88,99,55]
+x = sum(list1)
+print(x)
+
+
+
+
+# # Q2: Write a Python program to get the largest number from a list.
+list2 = [44,66,77,88,99,55]
+largest = max(list2)
+print(f"the largest number is : {largest}")
+
+
+
+
+# # Q3: Write a Python program to get the smallest number from a list.
+list3 = [44,66,77,88,99,55]
+smallest = min(list3)
+print(f"The smallest number is : {smallest}")
+
+
+
+
+# #Q4Write a Python program to display the first and last colors from the following list.
+# #                color_list = ["Red","Green","White" ,"Black"]
+
+color_list = ["Red","Green","White" ,"Black"]
+first_and_last = [color_list[0],color_list[-1]]
+print(first_and_last)
+
+
+
+
+# # Q5: Write a Python program to add 'ing' at the end of a given string (length should be at least 3). 
+# # If the given string is already ends with 'ing' then add 'ly' instead.
+
+string = input("Enter a string: ")
+new_string = "This is not a valid value"
+if len(string)> 3:
+    if "ing" in string[-3:]:
+
+        new_string = string
+        new_string = new_string.replace("ing","ly")
+
+    else:
+        new_string = string
+        new_string = new_string + "ing"
+
+print(new_string)
+        
+
+
+
+
+# # Q6: The marks obtained by a student in 5 different Subjects are input through a keyboard. The Student gets a division as per the following rules.
+# # 1.	Percentage above or equal to 60 – First Division
+# # 2.	Percentage between 50 and 59 – Second Division
+# # 3.	Percentage between 40 and 49 – Third Division
+# # 4.	Percentage less than 40 – Fail
+# # Write a python program to Display the result based on the above Criteria.
+
+
+english = float(input("Enter the marks in english"))
+hindi = float(input("Enter the marks in hindi"))
+maths = float(input("Enter the marks in maths"))
+sst = float(input("Enter the marks in sst"))
+science = float(input("Enter the marks in science"))
+
+percentage = (english+hindi+maths+sst+science) /500 *100
+
+
+print(f"Bruh you got :{percentage} % marks")
+
+if percentage >=60:
+    print("You Got First division my bro")
+
+
+elif percentage>=50 and percentage<=59 :
+    print("You got second division my bro")
+
+
+elif percentage>=40 and percentage<=49 :
+    print("You got second division my bro")
+
+else:
+    print("You failed the exam bro sorry :))")
+
+
+
+
+
+# # Q7: write a Python program to find the largest number among the three input numbers
+one = int(input("Enter the first number"))
+two = int(input("Enter the second number"))
+three = int(input("Enter the third number"))
+
+
+if(one>two):
+    if(one>three):
+        print("one is greater")
+elif(three>two):
+    if(three>one):
+        print("Three is greater")
+else:
+    print("Two is greater")
+
+
+
+
+
+# Q8: Write a Python program to check if the input year is a leap year or not.
+
+year = int(input("enter a year"))
+if (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0):
+    print("the given yeaer is a leap year")
+else:
+    print("The given year is not a leap year")
+
+
+
+
+
+# Q9: write a Program to check if a string is palindrome or not
+
+sting = input("enter a string you want to check if it is palindrome or not :")
+newsting=list(reversed(sting))
+
+if list(sting)==newsting:  # have to listify to convert the reversed string to check with the other
+    print("It is a palindrome")
+else:
+    print("it is not a palindrome")
+
+
+
+
+
+# Q10: Given a nested list. Write a python program to extend it with adding sub list ["h", "i", "j"] in a such a way that it will look like the following list
+# Given List:
+# list1 = ["a", "b", ["c", ["d", "e", ["f", "g"], "k"], "l"], "m", "n"]
+# Sub List to be added = ["h", "i", "j"]
+# Expected output:
+# ['a', 'b', ['c', ['d', 'e', ['f', 'g', 'h', 'i', 'j'], 'k'], 'l'], 'm', 'n']
+
+
+list1 = ["a", "b", ["c", ["d", "e", ["f", "g"], "k"], "l"], "m", "n"]
+
+sub  = ["h", "i", "j"]
+list1[2][1][2].append(sub)
+print(list1)
+
+
+
+
+
+
+# Q11: Write a python program for Given a Python list, to find value 20 in the list, and if it is present, replace it with 200. Only update the first occurrence of a value
+list1 = [5, 10, 15, 20, 25, 50, 20]
+# Expected output:
+# list1 = [5, 10, 15, 200, 25, 50, 20]
+
+
+if 20 in list1:
+    x= list1.index(20)
+    list1[x]=200
+    print(list1)
+
+
+
+
+
+# Q12: Write a program to rotate a list to the right by k steps.
+
+
+list1=[1,2,3,4,5]
+k=1
+x = list1[-(k) : ] + list1[  : -(k)]
+
+print(x)
+
+
+
+
+
+
+
+
+
+

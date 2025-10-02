@@ -1,0 +1,11 @@
+import math
+age = int(input("Enter your age please"))
+while age<0:
+    print("you can not enter age less than 0 ")
+    age = int(input("Enter your age please"))
+num = 0
+while num<1000:
+    num = num+1
+    print("Calulating age")
+    print(num%3)
+print("Thank you by calculating your age is {age}")

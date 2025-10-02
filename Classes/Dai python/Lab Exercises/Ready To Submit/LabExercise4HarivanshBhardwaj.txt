@@ -1,0 +1,197 @@
+# Q1: Write a Program to make a simple calculator that can add, subtract, multiply and divide
+# using functions
+
+
+def calc(d1,d2,op):
+    if op =="+":
+        result = d1+d2
+    elif op == "-":
+        result = d1-d2
+    elif op == "*":
+        result = d1*d2
+    elif op == "/":
+        result = d1/d2
+    print(result)
+    return result
+
+
+a,b,c = int(input("enter the first number: ")),int(input("Enter the second number: ")), input("Enter the operator +,-,/,* : ")
+calc(a,b,c)
+
+
+
+
+# Q 2: write a Program to display the Fibonacci sequence up to n-th term where n is provided by
+# the user
+def fibo (n):
+   for i in range (n):
+       i=i+(i-1)
+       print(i)
+
+n = int(input("Enter a number for fibo term"))
+x= fibo(n)
+print(x)
+
+
+
+
+
+
+# Q 3: Write a Python Program To Display Powers of 2 Using Anonymous Function
+# ( Lambda function). Take number of terms from user
+
+
+l1= [ float (i) for i in input("Enter values").split(",")]
+x=list(map(lambda x:x**2,l1))
+print(x)
+
+
+
+
+# Q 4: Write a Python Program to find numbers divisible by thirteen from a list using anonymous
+# function
+
+l1= [ int (i) for i in input("Enter values").split(",")]
+x = list(filter(lambda x: x % 13 == 0, l1))
+print(x)
+
+
+
+# Q5: Write a Python program to display the Fibonacci sequence up to n-th term by using recursive
+# functions
+
+def fibo (n):
+    if n<=1:
+        return n
+    else:
+    
+        return fibo(n-1)+fibo(n-2)
+
+
+
+
+num = int(input("Enter a number for fibo term"))
+x= fibo(num)
+print(x)
+
+
+
+
+# Q 6: Write a Python program to find the sum of natural numbers up to n using recursive function
+
+# sum of n 
+
+
+def sums(n):
+    '''it will give the sum of n natural 
+    numbers with the help of recursion'''
+    if n<=0:
+        return 0
+    else:
+        return n+sums(n-1)
+    
+
+print(sums(100))
+
+
+
+ 
+# Q. 7. Write a version of a palindrome recognizer that also accepts phrase palindromes 
+# such as "Go hang a salami I'm a lasagna hog.", "Was it a rat I saw?", "Step on no pets", 
+# "Sit on a potato pan, Otis", "Lisa Bonet ate no basil", "Satan, oscillate my metallic sonatas",
+# "I roamed under it as a tired nude Maori", "Rise to vote sir", or the exclamation "Dammit, I'm mad!".
+# Note that punctuation, capitalization, and spacing are usually ignored.
+
+
+
+def ispalendrome(stri):
+    stri= stri.lower()
+    stri = stri.replace(" ", "").replace(",", "")
+    newstr = stri[::-1]
+    if newstr == stri:
+        return True
+    else:
+        return False
+    
+a = ispalendrome("Lisa Bonet ate no basil")
+print(a)
+
+
+
+# Q. 8. A pangram is a sentence that contains all the letters of the English alphabet at least once,
+# for example: The quick brown fox jumps over the lazy dog. Your task here is to write a function
+# to check a sentence to see if it is a pangram or not.
+
+
+def ispangram(sent):
+    alphabet = set('abcdefghijklmnopqrstuvwxyz')
+    sent = set(sent.lower())
+    temp = set()
+    for char in sent:
+        if 'a' <= char <='z':
+            temp.add(char)
+    return alphabet == temp
+    
+    
+print(ispangram("Thequickbrownfoxjumpsverthelazy dog"))
+
+
+
+
+# Q.9. Define a function overlapping() that takes two lists and returns True if they have at least one
+# member in common, False otherwise.
+
+
+def overlapping(l1,l2):
+    for i in l1:
+        for j in l2:
+            if i == j:
+
+                return True
+    
+
+
+l1=[1,2,3,4,5,6,7,22,99]
+l2=[323,23,32,5433,22,34]
+
+print(overlapping(l1,l2))
+
+
+
+
+
+
+
+#     Q. 10. Write a function find_longest_word() that takes a list of words and returns the length of
+# the longest one.
+
+l1=input("Enter your values : ",).split(",")
+max = 0
+for i in range(len(l1)):
+    if len(l1[i])>max:
+        max = len(l1[i])
+        doms = l1[i]
+    
+    
+print(max,doms)
+
+
+
+
+
+
+# Q. 11. Write a function filter_long_words() that takes a list of words and an integer n and returns
+# the list of words that are longer than n
+
+
+
+
+
+l1=input("Enter your values : ",).split(",")
+max = 5
+doms = []
+for i in range(len(l1)):
+    if len(l1[i])>max:
+        doms.append(l1[i])
+    
+print(doms)
