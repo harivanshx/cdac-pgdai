@@ -1,0 +1,15 @@
+
+C Parameter:
+The C parameter controls the trade-off between maximizing the margin and minimizing the classification error.
+A smaller C value allows for a softer margin, meaning the classifier will tolerate more misclassifications in the training data. This can lead to a simpler decision boundary and potentially higher bias, which may result in underfitting.
+Conversely, a larger C value imposes a harder margin, meaning the classifier will aim to classify all training examples correctly. This can lead to a more complex decision boundary and potentially higher variance, which may result in overfitting, especially if the training data contains noise or outliers.
+gamma parameter :
+The gamma parameter determines the influence of a single training example, with low values meaning 'far' and high values meaning 'close'.
+A small gamma value implies a large radius of influence, where points further away are considered in the calculation of the decision boundary. This can lead to a smoother decision boundary and potentially higher bias, resulting in underfitting.
+Conversely, a large gamma value implies a smaller radius of influence, where only nearby points are considered in the calculation of the decision boundary. This can lead to a more complex decision boundary and potentially higher variance, resulting in overfitting, especially if the training data is noisy or contains irrelevant features.
+Small epsilon:
+When the epsilon value is small, the margin of tolerance around the predicted value is narrow. This means that the model aims to fit the training data closely, potentially leading to a more complex model with lower bias.
+Consequently, with a small epsilon, the model may be prone to overfitting, especially when the training data contains noise or outliers. The model may capture the noise or irregularities in the training data, resulting in poor generalization performance on unseen data.
+large epsilon:
+Conversely, when the epsilon value is large, the margin of tolerance around the predicted value is wider. This means that the model allows for more deviations from the exact fit, potentially leading to a simpler model with higher bias.
+With a large epsilon, the model is less sensitive to individual data points and may generalize better to unseen data. It can help prevent overfitting, especially when the training data is noisy or contains outliers.
