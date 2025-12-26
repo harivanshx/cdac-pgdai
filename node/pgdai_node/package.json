@@ -1,0 +1,21 @@
+{
+  "name": "pgdai_node",
+  "version": "1.0.0",
+  "description": "Nothing can teach you ",
+  "keywords": [],
+  "license": "ISC",
+  "author": "Harivansh",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "nodemon start.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "install": "^0.13.0",
+    "nodemon": "^3.1.11",
+    "npm": "^11.7.0"
+  }
+}
