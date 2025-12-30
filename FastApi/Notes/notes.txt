@@ -1,0 +1,19 @@
+WE do have fe, be and then to connect both of them we do have apis 
+
+to connect db and backend with frontend we do use API 
+
+
+
+Fast api is type of backend that create apis 
+
+Fast api is fast and dont require much boilerplate code
+
+
+-- Request response cycle , we do use http for req, res 
+
+for that we do use api so that we can replace our db with our ml model 
+
+
+
+- Fast Api help us to communicate between ml model and frontend code
+
